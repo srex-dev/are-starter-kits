@@ -1,0 +1,12 @@
+{
+  "are_foundation": {
+    "repo": "https://github.com/srex-dev/are-foundation.git",
+    "ref": "v0.1.1",
+    "note": "Requires the release tag that includes bin/are-foundation."
+  },
+  "are_agent_integrations": {
+    "repo": "https://github.com/srex-dev/are-agent-integrations.git",
+    "ref": "v0.1.0-alpha.0",
+    "note": "First public alpha tag for MCP and agent framework integration examples."
+  }
+}
