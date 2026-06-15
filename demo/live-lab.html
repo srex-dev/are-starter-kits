@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ARE Live Lab</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #080909;
+        --panel: #141414;
+        --panel-2: #1d1c19;
+        --line: #34342f;
+        --text: #f5f0df;
+        --muted: #b9b09d;
+        --gold: #e5d17a;
+        --green: #67d6a3;
+        --red: #f08080;
+        --cyan: #75d1d6;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      main {
+        width: min(1180px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 22px 0 28px;
+      }
+      header {
+        border: 1px solid var(--line);
+        background: var(--panel-2);
+        padding: 18px 20px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(30px, 5vw, 58px);
+        letter-spacing: 0;
+      }
+      .logo {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 7px 10px;
+        font-weight: 800;
+        font-size: 20px;
+      }
+      .logo small {
+        color: var(--gold);
+        font-size: 9px;
+        margin-left: 6px;
+      }
+      .sub {
+        margin: 5px 0 0;
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1.25fr 0.75fr;
+        gap: 14px;
+        margin-top: 14px;
+      }
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        padding: 14px;
+      }
+      .card h2,
+      .card h3 {
+        margin: 0 0 10px;
+        font-size: 15px;
+      }
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+      .step {
+        min-height: 112px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px;
+        background: #101111;
+      }
+      .step.active {
+        border-color: var(--gold);
+        background: #211f18;
+      }
+      .step.done {
+        border-color: rgba(103, 214, 163, 0.65);
+      }
+      .step.running {
+        border-color: var(--cyan);
+      }
+      .id {
+        color: var(--gold);
+        font: 700 11px ui-monospace, SFMono-Regular, Consolas, monospace;
+        text-transform: uppercase;
+      }
+      .label {
+        margin-top: 8px;
+        font-weight: 800;
+        font-size: 18px;
+      }
+      .detail {
+        margin-top: 7px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.35;
+      }
+      .command {
+        margin-top: 10px;
+        color: var(--cyan);
+        font: 11px ui-monospace, SFMono-Regular, Consolas, monospace;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .facts {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+      .fact {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px;
+        min-height: 70px;
+        background: #101111;
+      }
+      .fact b {
+        display: block;
+        color: var(--gold);
+        font: 700 10px ui-monospace, SFMono-Regular, Consolas, monospace;
+        text-transform: uppercase;
+        margin-bottom: 7px;
+      }
+      .fact span {
+        font-size: 17px;
+        font-weight: 800;
+        word-break: break-word;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 24px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 4px 8px;
+        margin: 3px;
+        font: 700 11px ui-monospace, SFMono-Regular, Consolas, monospace;
+      }
+      .allow {
+        color: var(--green);
+      }
+      .deny {
+        color: var(--red);
+      }
+      .events {
+        display: grid;
+        gap: 8px;
+      }
+      .event {
+        border-left: 3px solid var(--gold);
+        background: #101111;
+        border-radius: 8px;
+        padding: 10px 11px;
+      }
+      .event.good {
+        border-left-color: var(--green);
+      }
+      .event.warn {
+        border-left-color: var(--red);
+      }
+      .event .time {
+        color: var(--muted);
+        font: 11px ui-monospace, SFMono-Regular, Consolas, monospace;
+      }
+      .event .name {
+        font-weight: 800;
+        margin-top: 3px;
+      }
+      .event .summary {
+        color: var(--muted);
+        margin-top: 3px;
+        font-size: 13px;
+      }
+      footer {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 10px;
+      }
+      @media (max-width: 900px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .steps {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="logo">ARE <small>LIVE LAB</small></div>
+        <div>
+          <h1 id="title">Govern Nigel. Govern agents.</h1>
+          <p class="sub" id="subtitle">Actor, authority, scope, policy, proof before action.</p>
+        </div>
+      </header>
+
+      <section class="grid">
+        <div class="card">
+          <h2>Command Flow</h2>
+          <div class="steps" id="steps"></div>
+        </div>
+        <div class="card">
+          <h2>Proof Facts</h2>
+          <div class="facts" id="facts"></div>
+          <h3 style="margin-top: 14px">Recent Events</h3>
+          <div class="events" id="events"></div>
+        </div>
+      </section>
+      <footer id="updated">Waiting for live-lab state.</footer>
+    </main>
+
+    <script>
+      const stepsEl = document.getElementById("steps");
+      const factsEl = document.getElementById("facts");
+      const eventsEl = document.getElementById("events");
+      const updatedEl = document.getElementById("updated");
+
+      function tone(value) {
+        const text = String(value ?? "unknown").toUpperCase();
+        if (text === "ALLOW" || text === "TRUE") return "allow";
+        if (text === "DENY" || text === "ERROR" || text === "FALSE") return "deny";
+        return "";
+      }
+
+      function flatFacts(facts) {
+        const out = [
+          ["Agent", facts.agent_id || "not registered"],
+          ["Passport", facts.passport_id || "not issued"],
+          ["Verified", facts.passport_verified ?? "unknown"],
+          ["Executed", facts.executed === false ? "false" : "unknown"],
+        ];
+        if (facts.allow_case) out.push(["Champion", facts.allow_case.policy]);
+        if (facts.deny_case) out.push(["Experimental", facts.deny_case.policy]);
+        if (facts.mcp_case) {
+          out.push(["MCP read", facts.mcp_case.safe_tool?.effect]);
+          out.push(["MCP delete", facts.mcp_case.unsafe_tool?.effect]);
+        }
+        return out;
+      }
+
+      async function load() {
+        try {
+          const response = await fetch(`/reports/live-lab/state.json?t=${Date.now()}`);
+          if (!response.ok) throw new Error("state not ready");
+          const state = await response.json();
+          document.getElementById("title").textContent = state.title;
+          document.getElementById("subtitle").textContent = state.subtitle;
+          stepsEl.innerHTML = state.steps
+            .map(
+              (step) => `
+                <article class="step ${step.status} ${state.active_step === step.id ? "active" : ""}">
+                  <div class="id">${step.status} / ${step.id}</div>
+                  <div class="label">${step.label}</div>
+                  <div class="detail">${step.headline || "Waiting for command."}</div>
+                  <div class="command">${step.command}</div>
+                </article>
+              `,
+            )
+            .join("");
+          factsEl.innerHTML = flatFacts(state.facts || {})
+            .map(([key, value]) => `<div class="fact"><b>${key}</b><span class="${tone(value)}">${value}</span></div>`)
+            .join("");
+          eventsEl.innerHTML = (state.events || [])
+            .slice()
+            .reverse()
+            .map(
+              (event) => `
+                <div class="event ${event.tone}">
+                  <div class="time">${event.time}</div>
+                  <div class="name">${event.label}</div>
+                  <div class="summary">${event.summary}</div>
+                </div>
+              `,
+            )
+            .join("");
+          updatedEl.textContent = `Updated ${state.generated_at}. Public-safe local lab. No customer action executes.`;
+        } catch (error) {
+          stepsEl.innerHTML = `<article class="step active"><div class="label">Run reset</div><div class="detail">python scripts/live_lab.py reset</div></article>`;
+          factsEl.innerHTML = "";
+          eventsEl.innerHTML = "";
+          updatedEl.textContent = "Waiting for reports/live-lab/state.json";
+        }
+      }
+
+      load();
+      setInterval(load, 1200);
+    </script>
+  </body>
+</html>
